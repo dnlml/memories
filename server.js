@@ -52,6 +52,7 @@ app.post('/uploads', function(req, res){
 });
 
 io.on('connection', function(socket) {
+  console.log('New connection established');
   socket.on('upload', function(data){
     io.emit('upload', data);
   });
