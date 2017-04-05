@@ -7,7 +7,7 @@ var formidable = require('formidable');
 var fs = require('fs');
 var forEach = require('lodash/forEach');
 
-var filesPaths = []
+var filesPaths = [];
 
 app.use(express.static(path.join(__dirname, '/')));
 
@@ -17,6 +17,7 @@ app.get('/', function(req, res){
 
 app.get('/gallery', function(req, res){
   res.sendFile(__dirname + '/gallery.html');
+  readFiles();
 });
 
 app.post('/uploads', function(req, res){
@@ -62,11 +63,23 @@ http.listen(4000, function(){
   console.log('Server started, listening on http://localhost:4000');
 });
 
-// function readFiles() {
-//   fs.readdir('./uploads/', function(err, files) {
-//     files.forEach(file => {
-//       filesPaths.push('/uploads/' + file);
-//     });
-//     console.log(files);
-//   });
-// }
+function readFiles() {
+  console.log('Reading files');
+  fs.readdir('./uploads/', function(err, files) {
+    files.forEach(file => {
+      if (extensionCheck(file)) {
+       filesPaths.push(file);
+      }
+    });
+
+    io.on('connection', function(socket) {
+      io.emit('load', filesPaths);
+      filesPaths = [];
+    });
+  });
+}
+
+function extensionCheck(file) {
+  var myRe = new RegExp('^(.*\.((jpg|jpeg|png)$))?[^.]*$', 'igm');
+  return myRe.exec(file);
+}
