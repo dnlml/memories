@@ -3,20 +3,23 @@ $(function () {
   var socket = io();
   var formData;
   var fileUploaded;
+  var myRe = new RegExp('\.[0-9a-z]+$', 'igm');;
+  var fileName;
+  var file;
 
   $inputEl.on('change', function () {
-    // TODO change name of files to avoid conflicts
     // TODO check multiple upload from differente devices
     // TODO check upload of the same file
     var files = $inputEl.get(0).files;
-    if (files.length > 0) {
+    var filesLength = files.length;
+    if (filesLength > 0) {
       formData = new FormData();
       fileUploaded = [];
-
-      for (var i = 0; i < files.length; i++) {
-        var file = files[i];
-        formData.append('uploads[]', file, file.name);
-        fileUploaded.push(file.name);
+      for (var i = 0; i < filesLength; i++) {
+        file = files[i];
+        fileName = Date.now()+'_'+i+'_'+file.name;
+        formData.append('uploads[]', file, fileName);
+        fileUploaded.push(fileName);
       }
     }
     $inputEl.val('');

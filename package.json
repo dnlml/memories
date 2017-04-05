@@ -12,6 +12,7 @@
     "express": "^4.15.2",
     "formidable": "^1.1.1",
     "lodash": "^4.17.4",
+    "sharp": "^0.17.3",
     "socket.io": "^1.7.3"
   }
 }

@@ -6,6 +6,7 @@ var path = require('path');
 var formidable = require('formidable');
 var fs = require('fs');
 var forEach = require('lodash/forEach');
+var sharp = require('sharp');
 
 var filesPaths = [];
 
@@ -30,11 +31,21 @@ app.post('/uploads', function(req, res){
 
   // store all uploads in the /uploads directory
   form.uploadDir = path.join(__dirname, '/uploads');
+  form.uploadThumbs = path.join(__dirname, '/thumbs');
 
   // every time a file has been uploaded successfully,
   // rename it to it's orignal name
   form.on('file', function(field, file) {
     fs.rename(file.path, path.join(form.uploadDir, file.name));
+    sharp(path.join(form.uploadDir, file.name))
+        .resize(100,100)
+        .toBuffer()
+        .then( function(data) {
+          fs.writeFile(path.join(form.uploadThumbs, file.name), data, function(err) {
+            if (err) throw err;
+            console.log('Thumbnail generated');
+          });
+        });
   });
 
   // log any errors that occur
@@ -68,7 +79,7 @@ function readFiles() {
   fs.readdir('./uploads/', function(err, files) {
     files.forEach(file => {
       if (extensionCheck(file)) {
-       filesPaths.push(file);
+        filesPaths.push(file);
       }
     });
 
