@@ -42,16 +42,18 @@ app.post('/uploads', function(req, res){
     fs.rename(file.path, path.join(form.uploadDir, file.name), function (err) {
       if (err) throw err;
     });
-    sharp(path.join(form.uploadDir, file.name))
-        .resize(100,100)
-        .toBuffer()
-        .then( function(data) {
-          fs.writeFile(path.join(form.uploadThumbs, file.name), data, function(err) {
-            if (err) throw err;
-            console.log('Thumbnail generated');
-            io.emit('thumbnails generated', file.name);
-          });
+    sharp(
+      path.join(form.uploadDir, file.name))
+      .resize(100,100)
+      .toBuffer()
+      .then( function(data) {
+        fs.writeFile(path.join(form.uploadThumbs, file.name), data, function(err) {
+          if (err) throw err;
+          console.log('Thumbnail generated');
+          io.emit('thumbnails generated', file.name);
         });
+      }
+    );
   });
 
   // log any errors that occur

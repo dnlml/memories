@@ -9,7 +9,10 @@ $(function () {
 
   $inputEl.on('change', function () {
     // TODO check multiple upload from differente devices
-    var files = $inputEl.get(0).files;
+    // TODO check why image are rotated
+
+    var $el = $(this);
+    var files = $el.get(0).files;
     var filesLength = files.length;
     if (filesLength > 0) {
       formData = new FormData();
@@ -21,7 +24,7 @@ $(function () {
         fileUploaded.push(fileName);
       }
     }
-    $inputEl.val('');
+    $el.val('');
   });
 
   $('form').submit(function(e){
@@ -37,6 +40,8 @@ $(function () {
       success: function(){
         socket.emit('upload', fileUploaded);
         $inputEl.val('');
+        fileUploaded = [];
+        formData = undefined;
       }
     });
   });
