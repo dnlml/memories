@@ -8,8 +8,6 @@ $(function () {
   var file;
 
   $inputEl.on('change', function () {
-    // TODO check multiple upload from differente devices
-    // TODO check why image are rotated
 
     var $el = $(this);
     var files = $el.get(0).files;

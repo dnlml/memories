@@ -44,6 +44,7 @@ app.post('/uploads', function(req, res){
     });
     sharp(
       path.join(form.uploadDir, file.name))
+      .rotate()
       .resize(100,100)
       .toBuffer()
       .then( function(data) {
@@ -100,3 +101,8 @@ function extensionCheck(file) {
   var myRe = new RegExp('^(.*\.((jpg|jpeg|png)$))?[^.]*$', 'igm');
   return myRe.exec(file);
 }
+
+// TODO
+// - check multiple upload from differente devices
+// - show fullscreen the first image for 5 second, the resize it and remove it
+// - skin button and interface
