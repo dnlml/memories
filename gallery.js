@@ -1,8 +1,8 @@
 $(function () {
-  var socket = io();
+  var socket = io(); // load the socket.io-client
   var $ul = $('[data-list]');
 
-  socket.on('upload', function(data) {
+  socket.on('thumbnails generated', function(data) {
     appendImg(data);
   });
 
@@ -11,8 +11,16 @@ $(function () {
   });
 
   function appendImg(data) {
-    for (var img of data) {
-      $ul.append('<li><img src="/thumbs/' + img + '"></li>');
+    if (typeof data === 'string') {
+      $ul.append('<li><img src="/thumbs/' + data + '"></li>');
+    } else {
+      for (var img of data) {
+        $ul.append('<li><img src="/thumbs/' + img + '"></li>');
+      }
     }
+  }
+
+  function showFullscreen() {
+
   }
 });

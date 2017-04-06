@@ -1,6 +1,6 @@
 $(function () {
+  var socket = io(); // load the socket.io-client
   var $inputEl = $('#m');
-  var socket = io();
   var formData;
   var fileUploaded;
   var myRe = new RegExp('\.[0-9a-z]+$', 'igm');;
@@ -9,7 +9,6 @@ $(function () {
 
   $inputEl.on('change', function () {
     // TODO check multiple upload from differente devices
-    // TODO check upload of the same file
     var files = $inputEl.get(0).files;
     var filesLength = files.length;
     if (filesLength > 0) {
@@ -40,6 +39,5 @@ $(function () {
         $inputEl.val('');
       }
     });
-    return;
   });
 });

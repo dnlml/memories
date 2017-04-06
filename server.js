@@ -12,6 +12,10 @@ var filesPaths = [];
 
 app.use(express.static(path.join(__dirname, '/')));
 
+http.listen(4000, function(){
+  console.log('Server started, listening on http://localhost:4000');
+});
+
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
@@ -22,7 +26,6 @@ app.get('/gallery', function(req, res){
 });
 
 app.post('/uploads', function(req, res){
-
   // create an incoming form object
   var form = new formidable.IncomingForm();
 
@@ -36,7 +39,9 @@ app.post('/uploads', function(req, res){
   // every time a file has been uploaded successfully,
   // rename it to it's orignal name
   form.on('file', function(field, file) {
-    fs.rename(file.path, path.join(form.uploadDir, file.name));
+    fs.rename(file.path, path.join(form.uploadDir, file.name), function (err) {
+      if (err) throw err;
+    });
     sharp(path.join(form.uploadDir, file.name))
         .resize(100,100)
         .toBuffer()
@@ -44,6 +49,7 @@ app.post('/uploads', function(req, res){
           fs.writeFile(path.join(form.uploadThumbs, file.name), data, function(err) {
             if (err) throw err;
             console.log('Thumbnail generated');
+            io.emit('thumbnails generated', file.name);
           });
         });
   });
@@ -63,16 +69,14 @@ app.post('/uploads', function(req, res){
 
 });
 
+// Listen on the connection event for incoming sockets
 io.on('connection', function(socket) {
   console.log('New connection established');
   socket.on('upload', function(data){
-    io.emit('upload', data);
+    io.emit('upload completed', data);
   });
 });
 
-http.listen(4000, function(){
-  console.log('Server started, listening on http://localhost:4000');
-});
 
 function readFiles() {
   console.log('Reading files');
