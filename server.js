@@ -14,6 +14,23 @@ app.use(express.static(path.join(__dirname, '/')));
 
 http.listen(4000, function(){
   console.log('Server started, listening on http://localhost:4000');
+  fs.open('uploads', 'r', function(err,fd) {
+    if (err) {
+      console.log('Upload folder does not exist');
+      fs.mkdir('uploads', function() {
+        console.log('Creating folder /uploads');
+      });
+    }
+  });
+
+  fs.open('thumbs', 'r', function(err,fd) {
+    if (err) {
+      console.log('Thumbs folder does not exist');
+      fs.mkdir('thumbs', function() {
+        console.log('Creating folder /thumbs');
+      });
+    }
+  });
 });
 
 app.get('/', function(req, res){
@@ -26,13 +43,8 @@ app.get('/gallery', function(req, res){
 });
 
 app.post('/uploads', function(req, res){
-  // create an incoming form object
   var form = new formidable.IncomingForm();
-
-  // specify that we want to allow the user to upload multiple files in a single request
   form.multiples = true;
-
-  // store all uploads in the /uploads directory
   form.uploadDir = path.join(__dirname, '/uploads');
   form.uploadThumbs = path.join(__dirname, '/thumbs');
 
@@ -52,12 +64,11 @@ app.post('/uploads', function(req, res){
           console.log('Thumbnail generated');
           io.emit('thumbnails generated', file.name);
         });
-      }).catch(function () {
-        console.log("Promise Rejected");
+      }).catch(function (err) {
+        console.log("Promise Rejected, ", err);
     });
   });
 
-  // log any errors that occur
   form.on('error', function(err) {
     console.log('An error has occured: \n' + err);
   });
@@ -79,7 +90,6 @@ io.on('connection', function(socket) {
     io.emit('upload completed', data);
   });
 });
-
 
 function readFiles() {
   console.log('Reading files');

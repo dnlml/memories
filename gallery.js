@@ -4,6 +4,7 @@ $(function () {
 
   socket.on('thumbnails generated', function(data) {
     appendImg(data);
+    showFullscreen(data);
   });
 
   socket.on('load', function(data) {
@@ -20,7 +21,7 @@ $(function () {
     }
   }
 
-  function showFullscreen() {
+  function showFullscreen(data) {
 
   }
 });

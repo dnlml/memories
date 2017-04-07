@@ -13,7 +13,7 @@ $(function () {
     var $el = $(this);
     var files = $el.get(0).files;
     var filesLength = files.length;
-    if (filesLength > 0) {
+    if (filesLength > 0 && filesLength < 6) {
       formData = new FormData();
       fileUploaded = [];
       for (var i = 0; i < filesLength; i++) {
@@ -22,6 +22,11 @@ $(function () {
         formData.append('uploads[]', file, fileName);
         fileUploaded.push(fileName);
       }
+    } else {
+      alert('Please select not more than 5 images');
+      formData = undefined;
+      $('.progress').removeClass('visible');
+      return;
     }
 
     // SEND FILES
