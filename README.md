@@ -2,9 +2,9 @@
 _A simple node app to create a realtime mosaic of photos uploaded_
 
 ## HOW TO
-- `npm i`
-- `npm run memories`
-- `npm run cleanAll`
+- `npm i` -> Install the pcakges required
+- `npm run memories` -> Start the app. Go to localhost:4000 to see the upload interface and got to localhost:4000/gallery to show the mosaic
+- `npm run cleanAll` -> *Only for dev purpose* Empty the `/uploads` and `/thumbs` folder
 
 ## TODO
 - check multiple upload from differente devices
