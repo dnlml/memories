@@ -10,12 +10,14 @@ $(function () {
       return thisArg[target].apply(this, argumentList);
     },
     deleteProperty: function(target, property) {
-      console.log("Deleted %s", property);
+      // remove element from array
       return true;
     },
     set: function(target, property, value, receiver) {
       target[property] = value;
-      console.log("Set %s to %o", property, value);
+      if (typeof value === typeof '') {
+        appendImage();
+      }
       return true;
     }
   });
@@ -53,14 +55,18 @@ $(function () {
 
   function closeImageContainer() {
     $imageContainer.removeClass('visible');
+
+    setTimeout(function () {
+      $imageWhiteboard.text('');
+      _imagesToShow.shift();
+    }, 400);
   }
 
   function appendImage() {
     for(img of imagesToShow) {
+
+      $imageWhiteboard.append('<img src="' + img + '">');
       openImageContainer();
-      setTimeout(function() {
-        $imageWhiteboard.append('<img src="/uploads/' + img + '">')
-      }, 400);
 
       setTimeout(function () {
         closeImageContainer()
