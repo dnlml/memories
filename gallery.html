@@ -7,29 +7,69 @@
   <title>Gallery</title>
   <link rel="stylesheet" href="/reset.css" type="text/css">
   <style>
-    body { font: 13px Helvetica, Arial; }
-    ul {
+    body {
+      position: relative;
+      font: 13px Helvetica, Arial;
+      min-height: 100vh;
+      min-width: 100vw;
+    }
+    .mosaic {
       display: flex;
       flex-wrap: wrap;
+      position: relative;
+      z-index: 10;
     }
-    li {
+    .mosaic li {
       display: block;
       width: 100px;
       height: 100px;
     }
-    img {
+    .mosaic img {
       display: block;
       max-width: 100%;
       width: 100%;
       height: 100%;
     }
+
+    .full-image {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left:0;
+      background-color: rgba(0,0,0,.6);
+      z-index: 20;
+      transform: scale(0);
+      transition: transform .33s;
+    }
+
+    .full-image.visible {
+      transform: scale(1);
+    }
+
+    .full-image__image {
+      width: calc(100% - 100px);
+      height: calc(100% - 100px);
+      background-color: white;
+    }
+
   </style>
 </head>
 <body>
   <!--http://localhost:4000/gallery-->
-  <ul data-list>
+  <ul class="mosaic" data-mosaic></ul>
 
-  </ul>
+  <div class="full-image" data-full-image>
+    <div class="full-image__image" data-full-image-whiteboard>
+
+    </div>
+  </div>
+
   <script src="/socket.io/socket.io.js"></script>
   <script src="./jquery.js"></script>
   <script src="./gallery.js"></script>

@@ -29,7 +29,7 @@ $(function () {
       return;
     }
 
-    // SEND FILES
+    // Send files nd update the loading bar
     $.ajax({
       url: '/uploads',
       type: 'POST',
