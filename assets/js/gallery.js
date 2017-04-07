@@ -3,28 +3,63 @@ $(function () {
   var $ul = $('[data-mosaic]');
   var $imageContainer = $('[data-full-image]');
   var $imageWhiteboard = $imageContainer.find('[data-full-image-whiteboard]');
-  var imagesToShow = [];
+  var queue = [];
 
-  var _imagesToShow = new Proxy(imagesToShow, {
-    apply: function(target, thisArg, argumentsList) {
-      return thisArg[target].apply(this, argumentList);
-    },
-    deleteProperty: function(target, property) {
-      // remove element from array
-      return true;
-    },
-    set: function(target, property, value, receiver) {
-      target[property] = value;
-      if (typeof value === typeof '') {
-        appendImage();
-      }
-      return true;
+  // var _queue = new Proxyqueue, {
+  //   apply: function(target, thisArg, argumentsList) {
+  //     return thisArg[target].apply(this, argumentList);
+  //   },
+  //   deleteProperty: function(target, property) {
+  //     // remove element from array
+  //     return true;
+  //   },
+  //   set: function(target, property, value, receiver) {
+  //     target[property] = value;
+  //     if (typeof value === typeof '') {
+  //       appendImage();
+  //     }
+  //     return true;
+  //   }
+  // });
+
+  var isProcessingQueue;
+
+  function processQueue() {
+    if (!queue.length || isProcessingQueue) {
+      return;
     }
-  });
+
+    isProcessingQueue = true;
+    const lastInQueue = queue[queue.length - 1];
+
+    processImage(lastInQueue, () => {
+      queue.splice(-1, 1);
+      isProcessingQueue = false;
+      processQueue();
+    })
+  }
+
+  function processImage(filename, callback = function(){}) {
+    let image = new Image();
+    image.src = '/uploads/' + filename;
+
+    $imageWhiteboard.text('');
+    $imageWhiteboard.append(image);
+    openImageContainer();
+
+    setTimeout(function() {
+      closeImageContainer();
+    }, 5000);
+
+    setTimeout(function () {
+      callback();
+    }, 5400);
+  }
 
   socket.on('thumbnails generated', function(data) {
     appendThumb(data);
-    showFullscreen(data);
+    queue.push(data);
+    processQueue();
   });
 
   socket.on('load', function(data) {
@@ -46,7 +81,7 @@ $(function () {
   }
 
   function pushImage(data) {
-    _imagesToShow.push('/uploads/'+data);
+    queue.push('/uploads/'+data);
   }
 
   function openImageContainer() {
@@ -56,21 +91,19 @@ $(function () {
   function closeImageContainer() {
     $imageContainer.removeClass('visible');
 
-    setTimeout(function () {
-      $imageWhiteboard.text('');
-      _imagesToShow.shift();
-    }, 400);
+    // setTimeout(function () {
+    //   $imageWhiteboard.text('');
+    // }, 400);
   }
 
-  function appendImage() {
-    for(img of imagesToShow) {
+  // function appendImage() {
+  //   for(img of queue) {
+  //     $imageWhiteboard.append('<img src="' + img + '">');
+  //     openImageContainer();
 
-      $imageWhiteboard.append('<img src="' + img + '">');
-      openImageContainer();
-
-      setTimeout(function () {
-        closeImageContainer()
-      }, 5400);
-    }
-  }
+  //     setTimeout(function () {
+  //       closeImageContainer()
+  //     }, 5400);
+  //   }
+  // }
 });
