@@ -1,7 +1,7 @@
 #HOW TO
-- ´npm i´
-- ´npm run memories´
-- ´npm run cleanAll´
+- `npm i`
+- `npm run memories`
+- `npm run cleanAll`
 
 #TODO
 - check multiple upload from differente devices
