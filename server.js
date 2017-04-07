@@ -42,8 +42,7 @@ app.post('/uploads', function(req, res){
     fs.rename(file.path, path.join(form.uploadDir, file.name), function (err) {
       if (err) throw err;
     });
-    sharp(
-      path.join(form.uploadDir, file.name))
+    sharp(path.join(form.uploadDir, file.name))
       .rotate()
       .resize(100,100)
       .toBuffer()
@@ -53,8 +52,9 @@ app.post('/uploads', function(req, res){
           console.log('Thumbnail generated');
           io.emit('thumbnails generated', file.name);
         });
-      }
-    );
+      }).catch(function () {
+        console.log("Promise Rejected");
+    });
   });
 
   // log any errors that occur
@@ -101,8 +101,3 @@ function extensionCheck(file) {
   var myRe = new RegExp('^(.*\.((jpg|jpeg|png)$))?[^.]*$', 'igm');
   return myRe.exec(file);
 }
-
-// TODO
-// - check multiple upload from differente devices
-// - show fullscreen the first image for 5 second, the resize it and remove it
-// - skin button and interface

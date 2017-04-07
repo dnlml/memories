@@ -5,25 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Memories</title>
-    <style>
-      * { margin: 0; padding: 0; box-sizing: border-box; }
-      body { font: 13px Helvetica, Arial; }
-      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
-      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
-    </style>
+    <link rel="stylesheet" type="text/css" href="reset.css">
+    <link rel="stylesheet" type="text/css" href="index.css">
   </head>
   <body>
     <!--http://localhost:4000/-->
     <form action="">
-      <input id="m" type="file" name="uploads[]" multiple="multiple" accept="image/*">
-      <button>Upload Image</button>
+      <h1>Memories</h1>
+      <p>Please, upload the photos to write the marriage memories</p>
+      <div class="progress">
+        <div class="progress-bar" role="progressbar"></div>
+      </div>
+
+      <label for="m">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><path d="M776.7 350.4c-54.2-104.6-163.3-176-289.2-176-148.7 0-274.1 99.7-313 235.8C80.4 431.1 10 515 10 615.3c0 116 94.1 210.1 210.1 210.1h189.6V552.5h-75.9c-5 0-9.5-2.9-11.6-7.4s-1.5-9.8 1.7-13.7L490 331.1c2.4-2.9 6.1-4.6 9.9-4.6 3.8 0 7.5 1.7 9.9 4.6l165.6 199.6c2.2 2.3 3.5 5.4 3.5 8.8 0 7.1-5.7 12.9-12.9 12.9h-76v273.1h161.6c131.6 0 238.2-106.6 238.2-238.2.1-123.1-93.2-224.4-213.1-236.9z"/></svg>
+        <span>Upload</span>
+      </label>
+      <input id="m" type="file" name="uploads[]" multiple="multiple" accept="image/jpeg,image/jpg,image/png">
     </form>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
-            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-            crossorigin="anonymous">
-    </script>
+    <script src="./jquery.js"></script>
     <script src="./uploader.js"></script>
   </body>
 </html>

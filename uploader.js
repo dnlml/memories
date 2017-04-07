@@ -1,14 +1,15 @@
 $(function () {
   var socket = io(); // load the socket.io-client
   var $inputEl = $('#m');
+  var $progressBar = $('.progress-bar');
   var formData;
   var fileUploaded;
-  var myRe = new RegExp('\.[0-9a-z]+$', 'igm');;
   var fileName;
   var file;
 
   $inputEl.on('change', function () {
-
+    $progressBar.text('0%').width('0%');
+    $('.progress').addClass('visible');
     var $el = $(this);
     var files = $el.get(0).files;
     var filesLength = files.length;
@@ -22,11 +23,6 @@ $(function () {
         fileUploaded.push(fileName);
       }
     }
-    $el.val('');
-  });
-
-  $('form').submit(function(e){
-    e.preventDefault();
 
     // SEND FILES
     $.ajax({
@@ -38,8 +34,26 @@ $(function () {
       success: function(){
         socket.emit('upload', fileUploaded);
         $inputEl.val('');
-        fileUploaded = [];
-        formData = undefined;
+        setTimeout(function() {
+          $('.progress').removeClass('visible');
+        }, 1000);
+        setTimeout(function() {
+          $progressBar.text('').width('0%');
+        }, 1400);
+      },
+      xhr: function() {
+        var xhr = new XMLHttpRequest();
+        xhr.upload.addEventListener('progress', function(evt) {
+          if (evt.lengthComputable) {
+            var percentComplete = evt.loaded / evt.total;
+            percentComplete = parseInt(percentComplete * 100);
+            $progressBar.text(percentComplete + '%').width(percentComplete + '%');
+            if (percentComplete === 100) {
+              $progressBar.html('Done');
+            }
+          }
+        }, false);
+        return xhr;
       }
     });
   });
