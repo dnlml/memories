@@ -54,19 +54,21 @@ app.post('/uploads', function(req, res){
     fs.rename(file.path, path.join(form.uploadDir, file.name), function (err) {
       if (err) throw err;
     });
-    sharp(path.join(form.uploadDir, file.name))
-      .rotate()
-      .resize(100,100)
-      .toBuffer()
-      .then( function(data) {
-        fs.writeFile(path.join(form.uploadThumbs, file.name), data, function(err) {
-          if (err) throw err;
-          console.log('Thumbnail generated');
-          io.emit('thumbnails generated', file.name);
-        });
-      }).catch(function (err) {
-        console.log("Promise Rejected, ", err);
-    });
+    setTimeout(function() {
+        sharp(path.join(form.uploadDir, file.name))
+        .rotate()
+        .resize(100,100)
+        .toBuffer()
+        .then( function(data) {
+          fs.writeFile(path.join(form.uploadThumbs, file.name), data, function(err) {
+            if (err) throw err;
+            console.log('Thumbnail generated');
+            io.emit('thumbnails generated', file.name);
+          });
+        }).catch(function (err) {
+          console.log("Sharp", err);
+      });
+    },100);
   });
 
   form.on('error', function(err) {

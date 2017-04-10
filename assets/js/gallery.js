@@ -5,35 +5,20 @@ $(function () {
   var $imageWhiteboard = $imageContainer.find('[data-full-image-whiteboard]');
   var queue = [];
 
-  // var _queue = new Proxyqueue, {
-  //   apply: function(target, thisArg, argumentsList) {
-  //     return thisArg[target].apply(this, argumentList);
-  //   },
-  //   deleteProperty: function(target, property) {
-  //     // remove element from array
-  //     return true;
-  //   },
-  //   set: function(target, property, value, receiver) {
-  //     target[property] = value;
-  //     if (typeof value === typeof '') {
-  //       appendImage();
-  //     }
-  //     return true;
-  //   }
-  // });
-
   var isProcessingQueue;
 
   function processQueue() {
+
+    console.log(queue);
     if (!queue.length || isProcessingQueue) {
       return;
     }
 
     isProcessingQueue = true;
-    const lastInQueue = queue[queue.length - 1];
-
+    const lastInQueue = queue[0];
+    console.log(lastInQueue);
     processImage(lastInQueue, () => {
-      queue.splice(-1, 1);
+      queue.splice(0, 1);
       isProcessingQueue = false;
       processQueue();
     })
@@ -49,11 +34,11 @@ $(function () {
 
     setTimeout(function() {
       closeImageContainer();
-    }, 5000);
+    }, 7000);
 
     setTimeout(function () {
       callback();
-    }, 5400);
+    }, 7400);
   }
 
   socket.on('thumbnails generated', function(data) {
@@ -90,20 +75,5 @@ $(function () {
 
   function closeImageContainer() {
     $imageContainer.removeClass('visible');
-
-    // setTimeout(function () {
-    //   $imageWhiteboard.text('');
-    // }, 400);
   }
-
-  // function appendImage() {
-  //   for(img of queue) {
-  //     $imageWhiteboard.append('<img src="' + img + '">');
-  //     openImageContainer();
-
-  //     setTimeout(function () {
-  //       closeImageContainer()
-  //     }, 5400);
-  //   }
-  // }
 });

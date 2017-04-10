@@ -9,6 +9,5 @@ _A simple node app to create a realtime mosaic of photos uploaded_
 
 ## TODO
 - check multiple upload from differente devices
-- show fullscreen the first image for 5 second, the resize it and remove it
 - sometimes error `Error: Input file is missing or of an unsupported image format`
 - fix rotation problem
