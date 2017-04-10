@@ -1,4 +1,6 @@
 $(function () {
+  const MAX_THUMBS = 30;
+
   var socket = io(); // load the socket.io-client
   var $ul = $('[data-mosaic]');
   var $imageContainer = $('[data-full-image]');
@@ -9,14 +11,12 @@ $(function () {
 
   function processQueue() {
 
-    console.log(queue);
     if (!queue.length || isProcessingQueue) {
       return;
     }
 
     isProcessingQueue = true;
     const lastInQueue = queue[0];
-    console.log(lastInQueue);
     processImage(lastInQueue, () => {
       queue.splice(0, 1);
       isProcessingQueue = false;
@@ -58,6 +58,14 @@ $(function () {
       for (var img of data) {
         $ul.append('<li><img src="/thumbs/' + img + '"></li>');
       }
+    }
+    cleanGallery();
+  }
+
+  function cleanGallery() {
+    if ($ul.children().length > MAX_THUMBS) {
+      $ul.children(':first-of-type').remove();
+      cleanGallery();
     }
   }
 
