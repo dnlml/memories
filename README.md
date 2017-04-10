@@ -1,6 +1,9 @@
 # MEMORIES
 _A simple node app to create a realtime mosaic of photos uploaded_
 
+## REQUIREMENTS
+- Node.js and Npm
+
 ## HOW TO
 -  Open the terminal and run `npm i` to install the required packages.
 -  Then run `npm run memories` to start the app.
@@ -9,5 +12,3 @@ _A simple node app to create a realtime mosaic of photos uploaded_
 
 ## TODO
 - check multiple upload from differente devices
-- sometimes error `Error: Input file is missing or of an unsupported image format`
-- fix rotation problem
