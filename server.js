@@ -7,7 +7,7 @@ var formidable = require('formidable');
 var fs = require('fs');
 var forEach = require('lodash/forEach');
 var sharp = require('sharp');
-
+var isGalleryUp = false;
 var filesPaths = [];
 
 app.use(express.static(path.join(__dirname, '/')));
@@ -38,8 +38,13 @@ app.get('/', function(req, res){
 });
 
 app.get('/gallery', function(req, res){
-  res.sendFile(__dirname + '/gallery.html');
-  readFiles();
+  if(!isGalleryUp) {
+    isGalleryUp = true;
+    res.sendFile(__dirname + '/gallery.html');
+    readFiles();
+  } else if(isGalleryUp) {
+    res.sendFile(__dirname + '/404.html');
+  }
 });
 
 app.post('/uploads', function(req, res){
@@ -54,7 +59,8 @@ app.post('/uploads', function(req, res){
     fs.rename(file.path, path.join(form.uploadDir, file.name), function (err) {
       if (err) throw err;
     });
-    setTimeout(function() {
+    setTimeout(
+      function() {
         sharp(path.join(form.uploadDir, file.name))
         .rotate()
         .resize(100,100)
@@ -88,8 +94,9 @@ app.post('/uploads', function(req, res){
 // Listen on the connection event for incoming sockets
 io.on('connection', function(socket) {
   console.log('New connection established');
-  socket.on('upload', function(data){
-    io.emit('upload completed', data);
+
+  socket.on('disconnect', function(){
+    console.log('Socket disconnected');
   });
 });
 
@@ -103,7 +110,7 @@ function readFiles() {
     });
 
     io.on('connection', function(socket) {
-      io.emit('load', filesPaths);
+      socket.emit('load', filesPaths);
       filesPaths = [];
     });
   });

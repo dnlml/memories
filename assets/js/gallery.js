@@ -1,6 +1,7 @@
 $(function () {
   const MAX_THUMBS = 30;
-
+  const DURATION = 7000;
+  const INTERVALL = 60000 * .5;
   var socket = io(); // load the socket.io-client
   var $ul = $('[data-mosaic]');
   var $imageContainer = $('[data-full-image]');
@@ -8,6 +9,17 @@ $(function () {
   var queue = [];
 
   var isProcessingQueue;
+
+  socket.on('thumbnails generated', function(data) {
+    appendThumb(data);
+    queue.push(data);
+    processQueue();
+  });
+
+  socket.on('load', function(data) {
+    appendThumb(data);
+    randomImage();
+  });
 
   function processQueue() {
 
@@ -34,22 +46,12 @@ $(function () {
 
     setTimeout(function() {
       closeImageContainer();
-    }, 7000);
+    }, DURATION);
 
     setTimeout(function () {
       callback();
-    }, 7400);
+    }, DURATION+400);
   }
-
-  socket.on('thumbnails generated', function(data) {
-    appendThumb(data);
-    queue.push(data);
-    processQueue();
-  });
-
-  socket.on('load', function(data) {
-    appendThumb(data);
-  });
 
   function appendThumb(data) {
     if (typeof data === 'string') {
@@ -83,5 +85,25 @@ $(function () {
 
   function closeImageContainer() {
     $imageContainer.removeClass('visible');
+  }
+
+  function randomImage() {
+    console.log('randomImage');
+
+    var $imgs = $ul.find('img');
+    var imgCounter = $imgs.length;
+    var randomNumber;
+    var randomImg;
+
+    window.setInterval(function() {
+      randomNumber = Math.ceil(Math.random() * imgCounter) - 1;
+      randomImg = $($imgs[randomNumber]).attr('src');
+      randomImg = randomImg.replace('/thumbs/','');
+
+      if (!isProcessingQueue) {
+        queue.push(randomImg);
+        processQueue();
+      }
+    }, INTERVALL);
   }
 });

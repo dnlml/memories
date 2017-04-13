@@ -15,9 +15,13 @@ $(function () {
     setLocalStorage();
   }
 
+  var availableUploads = 10 - getLocalStorage();
+  updateCaption(availableUploads);
+
   if (uploadedPhotos >= 10) {
     obfuscateUpload();
   }
+
 
   $inputEl.on('change', function () {
     $progressBar.text('0%').width('0%');
@@ -34,6 +38,9 @@ $(function () {
         formData.append('uploads[]', file, fileName);
         fileUploaded.push(fileName);
         incrementLocalStorage();
+        availableUploads = 10 - getLocalStorage();
+        updateCaption(availableUploads);
+
         if(getLocalStorage() >= 10) {
           obfuscateUpload();
           i = filesLength;
@@ -99,4 +106,7 @@ $(function () {
     $label.css({'display': 'none'});
   }
 
+  function updateCaption(value) {
+    $caption.html('Please, upload the photos to write the marriage memories. You can still upload ' + value + ' photo(s) <span>*max 5 at the time</span>');
+  }
 });
