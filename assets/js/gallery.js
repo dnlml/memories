@@ -88,16 +88,17 @@ $(function () {
   }
 
   function randomImage() {
-    console.log('randomImage');
-
-    var $imgs = $ul.find('img');
-    var imgCounter = $imgs.length;
-    var randomNumber;
-    var randomImg;
-
     window.setInterval(function() {
-      randomNumber = Math.ceil(Math.random() * imgCounter) - 1;
-      randomImg = $($imgs[randomNumber]).attr('src');
+      console.log('setInterval');
+      var $imgs = $ul.find('img');
+      var imgCounter = $imgs.length;
+      var randomNumber = Math.ceil(Math.random() * imgCounter) - 1;
+      var randomImg = $($imgs[randomNumber]).attr('src');
+
+      if(!randomImg) {
+        return;
+      }
+
       randomImg = randomImg.replace('/thumbs/','');
 
       if (!isProcessingQueue) {
