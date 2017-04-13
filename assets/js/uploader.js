@@ -1,11 +1,23 @@
 $(function () {
   var socket = io(); // load the socket.io-client
   var $inputEl = $('#m');
+  var $label = $('[for="m"]');
+  var $caption = $('[data-caption]');
   var $progressBar = $('.progress-bar');
   var formData;
   var fileUploaded;
   var fileName;
   var file;
+  var uploadedPhotos = getLocalStorage();
+
+
+  if (!uploadedPhotos) {
+    setLocalStorage();
+  }
+
+  if (uploadedPhotos >= 10) {
+    obfuscateUpload();
+  }
 
   $inputEl.on('change', function () {
     $progressBar.text('0%').width('0%');
@@ -21,6 +33,11 @@ $(function () {
         fileName = Date.now()+'_'+i+'_'+file.name;
         formData.append('uploads[]', file, fileName);
         fileUploaded.push(fileName);
+        incrementLocalStorage();
+        if(getLocalStorage() >= 10) {
+          obfuscateUpload();
+          i = filesLength;
+        }
       }
     } else {
       alert('Please select not more than 5 images');
@@ -62,4 +79,24 @@ $(function () {
       }
     });
   });
+
+  function setLocalStorage() {
+    window.localStorage.setItem("memories", 0);
+  }
+
+  function getLocalStorage() {
+    return Number(window.localStorage.getItem("memories")) || false;
+  }
+
+  function incrementLocalStorage() {
+    var i = getLocalStorage();
+    i = i + 1;
+    window.localStorage.setItem("memories", i);
+  }
+
+  function obfuscateUpload() {
+    $caption.html('Thank you! <br> Nico and Gemma are super happy because you uploaded 10 photos <br> ❤');
+    $label.css({'display': 'none'});
+  }
+
 });
