@@ -89,7 +89,6 @@ $(function () {
 
   function randomImage() {
     window.setInterval(function() {
-      console.log('setInterval');
       var $imgs = $ul.find('img');
       var imgCounter = $imgs.length;
       var randomNumber = Math.ceil(Math.random() * imgCounter) - 1;

@@ -34,6 +34,13 @@ $(function () {
       fileUploaded = [];
       for (var i = 0; i < filesLength; i++) {
         file = files[i];
+
+        if ( !extensionCheck(file) ) {
+          alert('Only jpg and png are accepted');
+          $('.progress').removeClass('visible');
+          return;
+        }
+
         fileName = Date.now()+'_'+i+'_'+file.name;
         formData.append('uploads[]', file, fileName);
         fileUploaded.push(fileName);
@@ -107,6 +114,18 @@ $(function () {
   }
 
   function updateCaption(value) {
-    $caption.html('Please, upload the photos to write the marriage memories. You can still upload ' + value + ' photo(s) <span>*max 5 at the time</span>');
+    $caption.html(
+      'Please, upload the photos to write the marriage memories. You can still upload '
+      + value +
+      ' photo(s) <span>*max 5 at the time</span>');
   }
+
+  function extensionCheck(file) {
+    var myRe = new RegExp('\.jpg$|\.jpeg$|.png$', 'igm');
+    var stringToTest = file.name;
+    var tested = myRe.exec(stringToTest) ? true : false;
+    return tested;
+  }
+
+  window.eee = extensionCheck;
 });
