@@ -12,7 +12,7 @@ var filesPaths = [];
 
 app.use(express.static(path.join(__dirname, '/')));
 
-http.listen(4000, function(){
+http.listen(80, function(){
   console.log('Server started, listening on http://localhost:4000');
   fs.open('uploads', 'r', function(err,fd) {
     if (err) {
