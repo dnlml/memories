@@ -13,6 +13,10 @@ _A simple node app to create a realtime mosaic of photos uploaded_
 ## TODO
 - check multiple upload from differente devices
 
+## Instructions for clients (smartphones)
+- Connect smartphone to WiFi with SSID : MEMORIES
+- Go with browser to http://pics.com 
+
 ## Router WiFi todo
 - Disable WiFi password
 - Rename SSID
