@@ -29,7 +29,7 @@ _A simple node app to create a realtime mosaic of photos uploaded_
 ### Install and configure DNS Server
 - `sudo apt-get install -y dnsmasq`
 - `sudo service dnsmasq stop`
-- edit `/etc/dnsmasq.conf` adding rule : `address=/memories/192.168.1.126`
+- edit `/etc/dnsmasq.conf` adding rule : `address=/#/192.168.1.126`
 - `service dnsmasq start`
 
 ## Hardware to bring at wedding day
