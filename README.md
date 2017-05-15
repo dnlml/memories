@@ -12,3 +12,29 @@ _A simple node app to create a realtime mosaic of photos uploaded_
 
 ## TODO
 - check multiple upload from differente devices
+
+## Router WiFi todo
+- Disable WiFi password
+- Rename SSID
+- DHCP Map 48:ee:0c:22:dc:b2  ---> 192.168.1.10   (raspi)
+- DHCP Map e4:ce:8f:20:86:68  ---> 192.168.1.11  (dan's mpb)  
+
+
+## Raspberry Pi todo 
+
+### Install and configure DNS Server
+- `sudo apt-get install -y dnsmasq`
+- `sudo service dnsmasq stop`   
+- edit `/etc/dnsmasq.conf` adding rule : `address=/memories/192.168.1.11`
+- `service dnsmasq start`  
+
+## Hardware to bring at wedding day
+- Schermo Nico con Cavo alimentazione e minidisplayport
+- Raspberry pi con cavo alimentazione e dongle wifi 
+- Tastiera Rpi
+- Mouse usb per rpi
+- Router Wifi moviestar casa nico  con alimentatore
+- Prolunga elettrica 
+- Ciabatta minimo 4 slots
+- Cavo ethernet
+- Cavo HDMI 
