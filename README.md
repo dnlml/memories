@@ -20,8 +20,8 @@ _A simple node app to create a realtime mosaic of photos uploaded_
 ## Router WiFi todo
 - Disable WiFi password
 - Rename SSID
-- DHCP Map 48:ee:0c:22:dc:b2  ---> 192.168.1.10   (raspi)
-- DHCP Map e4:ce:8f:20:86:68  ---> 192.168.1.11  (dan's mpb)
+- DHCP Map 48:ee:0c:22:dc:b2  ---> 192.168.1.125   (raspi)
+- DHCP Map e4:ce:8f:20:86:68  ---> 192.168.1.126  (dan's mpb)
 
 
 ## Raspberry Pi todo
@@ -29,7 +29,7 @@ _A simple node app to create a realtime mosaic of photos uploaded_
 ### Install and configure DNS Server
 - `sudo apt-get install -y dnsmasq`
 - `sudo service dnsmasq stop`
-- edit `/etc/dnsmasq.conf` adding rule : `address=/memories/192.168.1.11`
+- edit `/etc/dnsmasq.conf` adding rule : `address=/memories/192.168.1.126`
 - `service dnsmasq start`
 
 ## Hardware to bring at wedding day
