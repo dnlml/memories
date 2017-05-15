@@ -10,10 +10,13 @@ var sharp = require('sharp');
 var isGalleryUp = false;
 var filesPaths = [];
 
+const SIZE_W = 120;
+const SIZE_H = 120;
+
 app.use(express.static(path.join(__dirname, '/')));
 
 http.listen(80, function(){
-  console.log('Server started, listening on http://localhost:4000');
+  console.log('Server started, listening on http://localhost:80');
   fs.open('uploads', 'r', function(err,fd) {
     if (err) {
       console.log('Upload folder does not exist');
@@ -63,7 +66,7 @@ app.post('/uploads', function(req, res){
       function() {
         sharp(path.join(form.uploadDir, file.name))
         .rotate()
-        .resize(100,100)
+        .resize(SIZE_W,SIZE_H)
         .toBuffer()
         .then( function(data) {
           fs.writeFile(path.join(form.uploadThumbs, file.name), data, function(err) {

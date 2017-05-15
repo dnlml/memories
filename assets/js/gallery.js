@@ -1,5 +1,5 @@
 $(function () {
-  const MAX_THUMBS = 30;
+  const MAX_THUMBS = 144;
   const DURATION = 7000;
   const INTERVALL = 60000 * .5;
   var socket = io(); // load the socket.io-client
