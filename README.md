@@ -2,7 +2,7 @@
 _A simple node app to create a realtime mosaic of photos uploaded_
 
 ## REQUIREMENTS
-- Node.js and Npm
+- Node.js(v4.2.4) and Npm
 
 ## HOW TO
 -  Open the terminal and run `npm i` to install the required packages.
